@@ -3,11 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Alright mate?</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap');
+        body {
+            text-align: center;
+            font-family: 'Merriweather', serif;
+        }
+        .word {
+            display: inline;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+            width: max-content;
+            justify-content: center;
+        }
+
+        .outer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left, .right {
+            padding: 10px;
+            text-align: left;
+            float: left;
+            border-style: solid;
+            border-radius: 5px;
+            border-width: 2px;
+        }
+        .word {
+            font-size: 2rem;
+        }
+        button {
+            width: 10rem;
+            height: 2rem;
+            font-size: large;
+        }
+        #pubname, #pubname * {
+            font-size: 2rem;
+        }
+        .word {
+            padding-right: 3px;
+            padding-left: 3px;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        #pubimg {
+            width: 6rem;
+        }
+    </style>
 </head>
 <body>
-    <button onclick="displayRandomWord()">Load Random Word</button>
-    <p id="randomWord">Random word will appear here...</p>
+    <img id="pubimg" src="pub.jpg" >
+    <h1>The English Pub Name Generator</h1>
+    <button onclick="pubName()">Make me a pub!</button>
+    <p id="pubname"><div class="word">The</div> <div class="word" id="adjout">English</div> <div class="word" id="subout">Pub</div></p>
+    <p><a id="maps" href="#">Does this place exist?</a></p>
+    <div class="outer">
+        <div class="container">
+            <div class="left">
+                <p>Select adjectives</p>
+                <input type="checkbox" checked id="colors" name="adjs" value="colours.txt"> Colours<br>
+                <input type="checkbox" checked id="demonyms" name="adjs" value="demonyms.txt"> Demonyms<br>
+                <input type="checkbox" checked id="abtpeople" name="adjs" value="abtpeople.txt"> Adjectives describing people<br>
+                <input type="checkbox" checked id="abtfood" name="adjs" value="abtfood.txt"> Adjectives describing food<br>
+            </div>
+            <div class="right">
+                <p>Select nouns</p>
+                <input type="checkbox" checked id="animals" name="subs" value="animals.txt"> Animals<br>
+                <input type="checkbox" checked id="objects" name="subs" value="objects.txt"> Common objects<br>
+            </div>
+        </div>
+    </div>
+    <p>Made with love in Gothenburg by <a href="https://babayev.se">Emil Babayev</a></p>
+    
+
+
+
 
     <script src="main.js"></script>
 </body>

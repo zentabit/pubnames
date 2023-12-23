@@ -1,26 +1,83 @@
-let words = [];
+let lists = {
+    'animals.txt': [],
+    'colours.txt': [],
+    'abtpeople.txt': [],
+    'objects.txt': [],
+    'demonyms.txt': [],
+    'abtfood.txt': []
+};
 
-// Function to fetch the word list once when the page loads
-function fetchWordList() {
-    fetch('words.txt')
-        .then(response => response.text())
-        .then(data => {
-            words = data.split('\n');
-        })
-        .catch(error => {
-            console.error('Error fetching the file:', error);
-        });
+function loadFiles() {
+    const filePromises = Object.keys(lists).map(fileName => {
+        return fetch(fileName)
+            .then(response => response.text())
+            .then(data => {
+                lists[fileName] = data.split('\n');
+            });
+    });
+
+    Promise.all(filePromises).then(() => {
+        console.log("All files loaded successfully");
+    }).catch(error => {
+        console.error('Error loading files:', error);
+    });
 }
 
-// Function to display a random word from the fetched list
-function displayRandomWord() {
-    if (words.length > 0) {
-        const randomWord = words[Math.floor(Math.random() * words.length)];
-        document.getElementById('randomWord').textContent = randomWord.trim();
+function randomAdjs() {
+    const selectedLists = Array.from(document.querySelectorAll('input[name="adjs"]:checked'))
+                                .map(checkbox => lists[checkbox.value])
+                                .flat();
+
+    if (selectedLists.length > 0) {
+        const randomElement = selectedLists[Math.floor(Math.random() * selectedLists.length)];
+        document.getElementById('adjout').textContent = randomElement.trim();
     } else {
-        document.getElementById('randomWord').textContent = "Word list not loaded.";
+        document.getElementById('adjout').textContent = "Please select at least one adjective list.";
     }
 }
 
-// Load the word list when the page loads
-window.onload = fetchWordList;
+function randomSubs() {
+    const selectedLists = Array.from(document.querySelectorAll('input[name="subs"]:checked'))
+                                .map(checkbox => lists[checkbox.value])
+                                .flat();
+
+    if (selectedLists.length > 0) {
+        const randomElement = selectedLists[Math.floor(Math.random() * selectedLists.length)];
+        document.getElementById('subout').textContent = randomElement.trim();
+    } else {
+        document.getElementById('subout').textContent = "Please select at least one subjective list.";
+    }
+}
+
+function checkAllCheckboxes() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+    });
+}
+
+function updateLink() {
+    let adjText = document.getElementById('adjout').textContent.trim();
+    let subText = document.getElementById('subout').textContent.trim();
+
+    adjText = adjText.replace(/\s+/g, '+');
+    subText = subText.replace(/\s+/g, '+');
+
+    // Update the href attribute of the link
+    const mapsLink = document.getElementById("maps");
+    if (mapsLink) {
+        mapsLink.href = `https://www.google.com/maps/search/The+${adjText}+${subText}`;
+    }
+}
+
+
+function pubName() {
+    randomAdjs();
+    randomSubs();
+    updateLink();
+}
+
+window.onload = function() {
+    checkAllCheckboxes();
+    loadFiles();
+};
